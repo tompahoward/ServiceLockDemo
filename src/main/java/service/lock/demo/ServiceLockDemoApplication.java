@@ -11,4 +11,5 @@ public class ServiceLockDemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceLockDemoApplication.class, args);
     }
+
 }

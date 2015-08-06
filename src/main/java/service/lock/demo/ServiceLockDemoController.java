@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "")
+@RequestMapping(value = "/app")
 public class ServiceLockDemoController {
     public final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -32,7 +32,7 @@ public class ServiceLockDemoController {
             }
         }
 
-        CounterFlipStrategy.createCounter(ff4j, featureName, 5);
+        CounterFlipStrategy.createCounter(ff4j, featureName, "SendCode", 5);
 
         ResponseEntity<Model> responseEntity = new ResponseEntity<Model>(
                 new Model("sent"), HttpStatus.OK);
@@ -62,7 +62,7 @@ public class ServiceLockDemoController {
             return new ResponseEntity<Model>(new Model("ok"), HttpStatus.OK);
         }
 
-        CounterFlipStrategy.createCounter(ff4j, featureName, 3);
+        CounterFlipStrategy.createCounter(ff4j, featureName, "CheckCode", 3);
 
         return ResponseEntity.badRequest().build();
     }

@@ -47,12 +47,14 @@ public class CounterFlipStrategy extends AbstractFlipStrategy {
         this.max = max;
     }
 
-    static void createCounter(FF4j ff4j, String featureName, int max) {
+    static void createCounter(FF4j ff4j, String featureName, String group,
+            int max) {
         if (!ff4j.exist(featureName)) {
             Feature feature = new Feature(featureName, true);
             CounterFlipStrategy flippingStrategy = new CounterFlipStrategy();
             flippingStrategy.getInitParams().put("max", Integer.toString(max));
             feature.setFlippingStrategy(flippingStrategy);
+            feature.setGroup(group);
             ff4j.getFeatureStore().create(feature);
         }
     }

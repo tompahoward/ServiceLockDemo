@@ -26,9 +26,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import service.lock.demo.Model;
-import service.lock.demo.ServiceLockDemoApplication;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ServiceLockDemoApplication.class)
 @WebIntegrationTest({ "server.port=0", "management.port=0" })
@@ -58,7 +55,7 @@ public class ServiceLockDemoApplicationTests {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         RequestEntity<MultiValueMap<String, String>> requestEntity = new RequestEntity<MultiValueMap<String, String>>(
                 body, headers, HttpMethod.POST, new URI("http://localhost:"
-                        + port + "/sendcode"));
+                        + port + "/app/sendcode"));
         rest.exchange(requestEntity, Model.class);
         rest.exchange(requestEntity, Model.class);
         rest.exchange(requestEntity, Model.class);
@@ -81,11 +78,11 @@ public class ServiceLockDemoApplicationTests {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         RequestEntity<MultiValueMap<String, String>> requestEntity = new RequestEntity<MultiValueMap<String, String>>(
                 body, headers, HttpMethod.POST, new URI("http://localhost:"
-                        + port + "/sendcode"));
+                        + port + "/app/sendcode"));
         rest.exchange(requestEntity, Model.class);
 
         URI checkCodeUri = UriBuilder
-                .fromUri("http://localhost:" + port + "/checkcode")
+                .fromUri("http://localhost:" + port + "/app/checkcode")
                 .queryParam("scvid", "999999").queryParam("code", RIGHT_CODE)
                 .build();
         rest.getForEntity(checkCodeUri, Model.class);
@@ -107,7 +104,7 @@ public class ServiceLockDemoApplicationTests {
     @Test
     public void lockAfter3FailedChecks() throws URISyntaxException, IOException {
         URI checkCodeUri = UriBuilder
-                .fromUri("http://localhost:" + port + "/checkcode")
+                .fromUri("http://localhost:" + port + "/app/checkcode")
                 .queryParam("scvid", "333333").queryParam("code", WRONG_CODE)
                 .build();
         try {
@@ -142,7 +139,7 @@ public class ServiceLockDemoApplicationTests {
 
         // Nope! Can't check any more, event with the right code
         checkCodeUri = UriBuilder
-                .fromUri("http://localhost:" + port + "/checkcode")
+                .fromUri("http://localhost:" + port + "/app/checkcode")
                 .queryParam("scvid", "333333").queryParam("code", RIGHT_CODE)
                 .build();
         try {
@@ -157,7 +154,7 @@ public class ServiceLockDemoApplicationTests {
         ff4j.delete("CheckCode.Locked.333333");
 
         checkCodeUri = UriBuilder
-                .fromUri("http://localhost:" + port + "/checkcode")
+                .fromUri("http://localhost:" + port + "/app/checkcode")
                 .queryParam("scvid", "333333").queryParam("code", RIGHT_CODE)
                 .build();
 
@@ -165,7 +162,7 @@ public class ServiceLockDemoApplicationTests {
                 .getBody().getContent(), Matchers.equalTo("ok"));
 
         checkCodeUri = UriBuilder
-                .fromUri("http://localhost:" + port + "/checkcode")
+                .fromUri("http://localhost:" + port + "/app/checkcode")
                 .queryParam("scvid", "333333").queryParam("code", WRONG_CODE)
                 .build();
 
