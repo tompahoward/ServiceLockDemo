@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/jdbc    http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+	<bean id="ff4j" class="org.ff4j.FF4j" p:store-ref="dbStore" />
+
+	<bean id="dbStore" class="org.ff4j.store.JdbcFeatureStore"
+		p:dataSource-ref="ff.jdbc.datasource" />
+
+	<jdbc:embedded-database id="ff.jdbc.datasource"
+		type="H2">
+		<jdbc:script location="classpath:schema-ddl.sql" />
+	</jdbc:embedded-database>
+
+	<!-- END STANDARD CONFIG -->
+</beans>
